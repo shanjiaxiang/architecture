@@ -13,6 +13,7 @@ public abstract class UsersDatabase extends RoomDatabase {
     private static volatile UsersDatabase INSTANCE;
     public abstract UserDao userDao();
 
+
     public static UsersDatabase getInstance(Context context){
         if (INSTANCE == null){
             synchronized (UsersDatabase.class){
