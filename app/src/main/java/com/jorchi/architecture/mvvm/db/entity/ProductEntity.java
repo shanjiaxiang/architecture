@@ -3,6 +3,7 @@ package com.jorchi.architecture.mvvm.db.entity;
 import com.jorchi.architecture.mvvm.model.Product;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 
@@ -15,6 +16,7 @@ public class ProductEntity implements Product {
     private String description;
     private int price;
 
+    @Ignore
     public ProductEntity() {
     }
 

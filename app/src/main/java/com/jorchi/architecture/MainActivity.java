@@ -6,6 +6,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.jorchi.architecture.mvvm.model.Product;
+import com.jorchi.architecture.mvvm.ui.ProductFragment;
+import com.jorchi.architecture.mvvm.ui.ProductListFragment;
 import com.jorchi.architecture.presenter.Injection;
 import com.jorchi.architecture.ui.UserViewModel;
 import com.jorchi.architecture.ui.ViewModelFactory;
@@ -30,37 +33,23 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mViewModelFactory = Injection.provideViewModelFactory(this);
-        mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(com.jorchi.architecture.ui.UserViewModel.class);
-
-        mName = findViewById(R.id.user_name);
-        mInput = findViewById(R.id.user_name_input);
-        mUpdate = findViewById(R.id.update_user);
-        mUpdate.setOnClickListener(v -> {
-            updateUserName();
-        });
-
-
-        mDisposable.add(mViewModel.getUserName()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(userName-> mName.setText(userName),
-                        throwable -> Log.e(TAG, "Unable to update username", throwable)));
+        if (savedInstanceState == null) {
+            ProductListFragment fragment = new ProductListFragment();
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.fragment_container, fragment, ProductListFragment.TAG)
+                    .commit();
+        }
     }
 
-    private void updateUserName(){
-        String userName = mInput.getText().toString();
-        mUpdate.setEnabled(false);
-        mDisposable.add(mViewModel.updateUserName(userName)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(()->mUpdate.setEnabled(true),
-                        throwable -> Log.e(TAG, "Unable to update username", throwable)));
-    }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        mDisposable.clear();
+    public void show(Product product) {
+        ProductFragment productFragment = ProductFragment.forProduct(product.getId());
+        getSupportFragmentManager()
+                .beginTransaction()
+                .addToBackStack("product")
+                .replace(R.id.fragment_container, productFragment, null)
+                .commit();
+
     }
 }

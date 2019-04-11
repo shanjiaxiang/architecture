@@ -6,6 +6,7 @@ import java.util.Date;
 
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
@@ -23,6 +24,7 @@ public class CommentEntity implements Comment {
     private String text;
     private Date postedAt;
 
+    @Ignore
     public CommentEntity() {}
 
     public CommentEntity(int id, int productId, String text, Date postedAt) {

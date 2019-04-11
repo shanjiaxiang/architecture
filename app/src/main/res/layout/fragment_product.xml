@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="isLoading"
+            type="boolean" />
+
+        <variable
+            name="productViewModel"
+            type="com.jorchi.architecture.mvvm.viewmodel.ProductViewModel" />
+
+    </data>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            layout="@layout/product_item"
+            app:product="@{productViewModel.product}" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/loading_comments_tv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Loading comments..."
+                app:visibleGone="@{isLoading}" />
+
+            <FrameLayout
+                android:id="@+id/comments_list_wrapper"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/comment_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="Comments List"
+                    app:layoutManager="LinearLayoutManager"
+                    app:visibleGone="@{!isLoading}" />
+            </FrameLayout>
+        </FrameLayout>
+    </LinearLayout>
+</layout>
